@@ -22,9 +22,9 @@
     }
 </style>
 <body>
-<script src="http://d3js.org/d3.v4.min.js"></script>
-<script src="http://d3js.org/queue.v1.min.js"></script>
-<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/queue.v1.min.js"></script>
+<script src="https://d3js.org/topojson.v1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
 
 <script>
@@ -42,7 +42,7 @@
 
 	const color = d3.scaleThreshold()
 			.domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ])
-			.range(['rgb(247,251,255)', 'rgb(222,235,247)', 'rgb(198,219,239)', 'rgb(158,202,225)', 'rgb(107,174,214)', 
+			.range(['rgb(247,251,255)', 'rgb(222,235,247)', 'rgb(198,219,239)', 'rgb(158,202,225)', 'rgb(107,174,214)',
                 'rgb(66,146,198)', 'rgb(33,113,181)', 'rgb(8,81,156)', 'rgb(8,48,107)', 'rgb(3,19,43)']);
 
 	const svg = d3.select('body')
@@ -114,7 +114,7 @@
                     .style("opacity", 1)
                     .style("stroke","white")
                     .style("stroke-width",);
-               // console.log("Country name in map: " + d.properties['name']);
+                console.log("in map, selected country: " + d.properties['name']);
                 onMouseOverLink(d.properties['name'])
             })
             .on('mouseout', function(d){
@@ -148,12 +148,12 @@
         map.removeHighlight = function(data, type){
             this.selectAll("path")
                 .select(function(d){
-                    if (typeof d.properties != 'undefined'){
+                    if (typeof d.id != 'undefined'){
                         return (data.map(function(e){
-                            if (typeof e.properties != 'undefined'){
-                                return e.properties['name']
+                            if (typeof e.id != 'undefined'){
+                                return e.id;
                             }
-                        }).indexOf(d.properties['name']) >= 0)
+                        }).indexOf(d.id) >= 0)
                         && (d3.select(this).attr("class") !== "isBrushed") ? this : null;
                     }
                 })
@@ -224,7 +224,10 @@
             .attr("cy", yMap)
             .style("fill", function(d) { return color(fertilityById[d.id]);})
             .on("mouseover", function(d) {
+                console.log("in scatter plot, selected country: ");
+                console.log(d.Country);
                 _dispatcher.call("mouseover", this, [d], "default");
+
             })
             .on("mouseout", function(d) {
                 _dispatcher.call("mouseout", this, [d], "default");
